@@ -1,0 +1,26 @@
+
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/persistence" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+    <persistence-unit name="pu" transaction-type="RESOURCE_LOCAL">
+        <properties>
+            <!--  Database connection settings  -->
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/kenty_db?createDatabaseIfNotExist=true"/>
+            <property name="javax.persistence.jdbc.user" value="kenty"/>
+            <property name="javax.persistence.jdbc.password" value="050402"/>
+            <!--  SQL dialect  -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+            <!--  postgres=# CREATE DATABASE onetomanyjpa OWNER test;  -->
+            <!--              <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />  -->
+            <!--              <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/onetomanyjpa" />  -->
+            <!--              <property name="jakarta.persistence.jdbc.user" value="test" />  -->
+            <!--              <property name="jakarta.persistence.jdbc.password" value="test" />  -->
+            <!--  SQL dialect  -->
+            <!--          <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>      -->
+            <!--  Create/update tables automatically using mapping metadata  -->
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <!--  Pretty print the SQL in the log file and console  -->
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.show_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>
