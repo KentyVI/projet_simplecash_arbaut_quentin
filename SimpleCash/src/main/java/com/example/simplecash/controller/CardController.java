@@ -4,6 +4,8 @@ import com.example.simplecash.dto.CardDTO;
 import com.example.simplecash.entity.Card;
 import com.example.simplecash.mapper.SimpleCashMapper;
 import com.example.simplecash.service.CardService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cartes")
+@Tag(name = "Cartes", description = "Gestion des cartes bancaires")
 public class CardController {
     private final CardService cardService;
 
@@ -20,14 +23,17 @@ public class CardController {
         this.cardService = cardService;
     }
 
+    @Operation(summary = "Lister les cartes")
     @GetMapping
     public List<CardDTO> list(){
         return cardService.findAll().stream().map(SimpleCashMapper::toDTO).collect(Collectors.toList());
     }
 
+    @Operation(summary = "Récupérer une carte par id")
     @GetMapping("/{id}")
     public CardDTO get(@PathVariable Long id){ return SimpleCashMapper.toDTO(cardService.get(id)); }
 
+    @Operation(summary = "Créer une carte pour un client")
     @PostMapping("/client/{clientId}")
     public ResponseEntity<CardDTO> create(@PathVariable Long clientId, @RequestBody CardDTO dto){
         Card c = new Card();
@@ -38,6 +44,7 @@ public class CardController {
         return ResponseEntity.created(URI.create("/api/cartes/"+created.getId())).body(SimpleCashMapper.toDTO(created));
     }
 
+    @Operation(summary = "Supprimer une carte")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){ cardService.delete(id); }
 }
