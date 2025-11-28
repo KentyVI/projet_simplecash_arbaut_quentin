@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -56,5 +57,10 @@ public class ManagerController {
         c.setNom(dto.getNom()); c.setPrenom(dto.getPrenom()); c.setEmail(dto.getEmail()); c.setTelephone(dto.getTelephone());
         Conseiller created = managerService.addConseiller(id, c);
         return ResponseEntity.created(URI.create("/api/conseillers/"+created.getId())).body(SimpleCashMapper.toDTO(created));
+    }
+
+    @GetMapping("/audit")
+    public List<String> lancerAudit(){
+        return managerService.auditerComptes();
     }
 }

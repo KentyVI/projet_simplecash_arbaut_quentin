@@ -42,4 +42,3 @@ public class ClientController {
         return SimpleCashMapper.toDTO(clientService.ajouterCompteEpargne(id, numero, solde, taux));
     }
 }
-
