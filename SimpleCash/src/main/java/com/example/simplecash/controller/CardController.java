@@ -36,11 +36,11 @@ public class CardController {
     @Operation(summary = "Créer une carte pour un client")
     @PostMapping("/client/{clientId}")
     public ResponseEntity<CardDTO> create(@PathVariable Long clientId, @RequestBody CardDTO dto){
-        Card c = new Card();
-        c.setType(dto.getType());
-        c.setNumeroCarte(dto.getNumeroCarte());
-        c.setDateExpiration(dto.getDateExpiration());
-        Card created = cardService.createForClient(clientId, c);
+        Card card = new Card();
+        card.setType(dto.getType());
+        card.setNumeroCarte(dto.getNumeroCarte());
+        card.setDateExpiration(dto.getDateExpiration());
+        Card created = cardService.createForClient(clientId, card);
         return ResponseEntity.created(URI.create("/api/cartes/"+created.getId())).body(SimpleCashMapper.toDTO(created));
     }
 

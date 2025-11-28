@@ -39,10 +39,10 @@ public class ManagerController {
     @Operation(summary = "Créer un manager")
     @PostMapping
     public ResponseEntity<ManagerDTO> create(@RequestBody ManagerDTO dto){
-        Manager g = new Manager();
-        g.setNom(dto.getNom()); g.setPrenom(dto.getPrenom());
-        g.setEmail(dto.getEmail()); g.setTelephone(dto.getTelephone());
-        Manager created = managerService.create(g);
+        Manager manager = new Manager();
+        manager.setNom(dto.getNom()); manager.setPrenom(dto.getPrenom());
+        manager.setEmail(dto.getEmail()); manager.setTelephone(dto.getTelephone());
+        Manager created = managerService.create(manager);
         return ResponseEntity.created(URI.create("/api/managers/"+created.getId())).body(SimpleCashMapper.toDTO(created));
     }
 
@@ -62,9 +62,9 @@ public class ManagerController {
     @Operation(summary = "Ajouter un conseiller à un manager")
     @PostMapping("/{id}/conseillers")
     public ResponseEntity<ConseillerDTO> addConseiller(@PathVariable Long id, @RequestBody ConseillerDTO dto){
-        Conseiller c = new Conseiller();
-        c.setNom(dto.getNom()); c.setPrenom(dto.getPrenom()); c.setEmail(dto.getEmail()); c.setTelephone(dto.getTelephone());
-        Conseiller created = managerService.addConseiller(id, c);
+        Conseiller conseiller = new Conseiller();
+        conseiller.setNom(dto.getNom()); conseiller.setPrenom(dto.getPrenom()); conseiller.setEmail(dto.getEmail()); conseiller.setTelephone(dto.getTelephone());
+        Conseiller created = managerService.addConseiller(id, conseiller);
         return ResponseEntity.created(URI.create("/api/conseillers/"+created.getId())).body(SimpleCashMapper.toDTO(created));
     }
 

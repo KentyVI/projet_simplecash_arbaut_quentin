@@ -36,19 +36,19 @@ public class AgenceController {
     @Operation(summary = "Créer une agence")
     @PostMapping
     public ResponseEntity<AgenceDTO> create(@RequestBody AgenceDTO dto){
-        Agence a = new Agence();
-        a.setId(dto.getId());
-        a.setDateCreation(dto.getDateCreation());
-        Agence created = agenceService.create(a, dto.getManagerId());
+        Agence agence = new Agence();
+        agence.setId(dto.getId());
+        agence.setDateCreation(dto.getDateCreation());
+        Agence created = agenceService.create(agence, dto.getManagerId());
         return ResponseEntity.created(URI.create("/api/agences/"+created.getId())).body(SimpleCashMapper.toDTO(created));
     }
 
     @Operation(summary = "Modifier une agence")
     @PutMapping("/{id}")
     public AgenceDTO update(@PathVariable String id, @RequestBody AgenceDTO dto){
-        Agence a = new Agence();
-        a.setDateCreation(dto.getDateCreation());
-        return SimpleCashMapper.toDTO(agenceService.update(id, a, dto.getManagerId()));
+        Agence agence = new Agence();
+        agence.setDateCreation(dto.getDateCreation());
+        return SimpleCashMapper.toDTO(agenceService.update(id, agence, dto.getManagerId()));
     }
 
     @Operation(summary = "Supprimer une agence")

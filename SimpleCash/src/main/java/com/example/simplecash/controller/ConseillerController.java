@@ -40,9 +40,9 @@ public class ConseillerController {
     @Operation(summary = "Créer un conseiller", description = "Ajoute un nouveau conseiller et l'assigne à un manager.")
     @PostMapping
     public ResponseEntity<ConseillerDTO> create(@RequestBody ConseillerDTO dto){
-        Conseiller c = new Conseiller();
-        c.setNom(dto.getNom()); c.setPrenom(dto.getPrenom()); c.setEmail(dto.getEmail()); c.setTelephone(dto.getTelephone());
-        Conseiller created = conseillerService.create(c, dto.getManagerId());
+        Conseiller conseiller = new Conseiller();
+        conseiller.setNom(dto.getNom()); conseiller.setPrenom(dto.getPrenom()); conseiller.setEmail(dto.getEmail()); conseiller.setTelephone(dto.getTelephone());
+        Conseiller created = conseillerService.create(conseiller, dto.getManagerId());
         return ResponseEntity.created(URI.create("/api/conseillers/"+created.getId())).body(SimpleCashMapper.toDTO(created));
     }
 
