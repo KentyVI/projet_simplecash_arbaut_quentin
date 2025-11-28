@@ -311,9 +311,6 @@ class RoutesIntegrationTest {
         mockMvc.perform(post("/api/conseillers/virements")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(v))
-                .andExpect(result -> {
-                    int s = result.getResponse().getStatus();
-                    assertThat(s).isBetween(400, 599);
-                });
+                .andExpect(status().is4xxClientError());
     }
 }
