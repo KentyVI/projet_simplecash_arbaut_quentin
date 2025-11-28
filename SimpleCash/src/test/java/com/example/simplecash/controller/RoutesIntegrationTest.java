@@ -269,4 +269,51 @@ class RoutesIntegrationTest {
         Long managerToDelete = mapper.readTree(res.getResponse().getContentAsString()).get("id").asLong();
         mockMvc.perform(delete("/api/managers/"+managerToDelete)).andExpect(status().isOk());
     }
+
+    @Test @Order(22)
+    void testVirementSoldeInsuffisant() throws Exception {
+        // Crée deux clients avec comptes, le premier n'a pas assez de fond/décovert pour le virement
+        String srcBody = "{" +
+                "\"nom\":\"Test\",\"prenom\":\"Src\",\"adresse\":\"1 rue X\",\"codePostal\":\"75000\",\"ville\":\"Paris\",\"telephone\":\"0600000003\",\"typeClient\":\"PARTICULIER\"}";
+        MvcResult resSrc = mockMvc.perform(post("/api/conseillers/"+conseillerId+"/clients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(srcBody))
+                .andExpect(status().isCreated())
+                .andReturn();
+        Long srcId = mapper.readTree(resSrc.getResponse().getContentAsString()).get("id").asLong();
+
+        String ccSrc = "{" +
+                "\"numeroCompte\":\"CC-SRC\",\"soldeInitial\":100,\"decouvertAutorise\":1000}";
+        mockMvc.perform(post("/api/clients/"+srcId+"/compte-courant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ccSrc))
+                .andExpect(status().isOk());
+
+        String dstBody = "{" +
+                "\"nom\":\"Test\",\"prenom\":\"Dst\",\"adresse\":\"2 rue Y\",\"codePostal\":\"31000\",\"ville\":\"Toulouse\",\"telephone\":\"0600000004\",\"typeClient\":\"PARTICULIER\"}";
+        MvcResult resDst = mockMvc.perform(post("/api/conseillers/"+conseillerId+"/clients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dstBody))
+                .andExpect(status().isCreated())
+                .andReturn();
+        Long dstId = mapper.readTree(resDst.getResponse().getContentAsString()).get("id").asLong();
+
+        String ccDst = "{" +
+                "\"numeroCompte\":\"CC-DST\",\"soldeInitial\":0,\"decouvertAutorise\":1000}";
+        mockMvc.perform(post("/api/clients/"+dstId+"/compte-courant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ccDst))
+                .andExpect(status().isOk());
+
+        // Tentative de virement trop gros -> doit échouer (4xx ou 5xx)
+        String v = "{" +
+                "\"clientSourceId\":"+srcId+",\"clientDestId\":"+dstId+",\"montant\":10000}";
+        mockMvc.perform(post("/api/conseillers/virements")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(v))
+                .andExpect(result -> {
+                    int s = result.getResponse().getStatus();
+                    assertThat(s).isBetween(400, 599);
+                });
+    }
 }

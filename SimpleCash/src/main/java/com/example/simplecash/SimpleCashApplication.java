@@ -23,7 +23,18 @@ public class SimpleCashApplication {
                                ConseillerRepository conseillerRepository,
                                ClientRepository clientRepository) {
         return args -> {
-            if (managerRepository.count() > 0) return; // déjà rempli
+            boolean needSeed = true;
+            try {
+                needSeed = managerRepository.count() == 0;
+            } catch (Exception e) {
+                // Table possiblement absente au premier run: on seed quand même.
+                needSeed = true;
+            }
+            if (!needSeed) {
+                System.out.println("[INIT] Données déjà présentes — pas de seed.");
+                return;
+            }
+            System.out.println("[INIT] Seeding base SimpleCash (managers/agences/conseillers/clients)…");
 
             // Managers
             Manager g1 = new Manager();
