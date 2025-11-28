@@ -4,9 +4,32 @@
 
 Gestion des managers, agences, conseillers, clients, comptes et cartes avec audit, virements, simulation de crédit, logging AOP et documentation Swagger.
 
+<a href="https://www.java.com/"><img alt="Java" src="https://img.shields.io/badge/Java-17-007396?logo=java&logoColor=white"></a>
+<a href="https://spring.io/projects/spring-boot"><img alt="Spring Boot" src="https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?logo=springboot&logoColor=white"></a>
+<a href="#documentation"><img alt="OpenAPI" src="https://img.shields.io/badge/OpenAPI-3.0-85EA2D?logo=openapiinitiative&logoColor=black"></a>
+<a href="#tests"><img alt="Tests" src="https://img.shields.io/badge/Tests-MockMvc-blue"></a>
+
 ![Diagramme](diagram_simplecash.png)
 
 </div>
+
+## Sommaire
+
+- [Liens rapides](#liens-rapides)
+- [Fonctionnalités](#fonctionnalités)
+- [Stack technique](#stack-technique)
+- [Démarrage rapide](#démarrage-rapide)
+  - [Mode MySQL (par défaut)](#démarrage-rapide)
+  - [Mode H2 (mémoire, sans MySQL)](#mode-h2-mémoire-sans-mysql)
+- [Principaux endpoints](#principaux-endpoints)
+  - [Exemples rapides](#exemples-rapides)
+- [Logging AOP](#logging-aop)
+- [Seeds de données](#seeds-de-données)
+- [Tests](#tests)
+- [Structure du projet](#structure-du-projet)
+- [Notes](#notes)
+- [Difficultés Rencontrées](#difficultés-rencontrées-et-solutions)
+- [Dépannage](#dépannage)
 
 ## Liens rapides
 
@@ -60,6 +83,19 @@ cd SimpleCash
 
 4) Ouvrir la documentation
 - Swagger UI: `http://localhost:8080/swagger-ui.html`
+
+### Mode H2 (mémoire, sans MySQL)
+
+Lancer rapidement l'appli en H2, sans installer de base de données:
+
+```
+cd SimpleCash
+./gradlew bootRun --args='--spring.datasource.url=jdbc:h2:mem:sc;DB_CLOSE_DELAY=-1 \
+  --spring.datasource.driverClassName=org.h2.Driver \
+  --spring.datasource.username=sa \
+  --spring.datasource.password= \
+  --spring.jpa.hibernate.ddl-auto=create-drop'
+```
 
 ## Principaux endpoints
 
@@ -140,6 +176,28 @@ SimpleCash/
 - Les règles de découvert sont implémentées dans `ConseillerService.effectuerVirement`.
 - L’audit global est exposé via `GET /api/managers/audit` (voir `ManagerService.auditerComptes`).
 
+
+## Difficultés Rencontrées et Solutions
+
+Ce projet a représenté un défi technique stimulant, permettant une montée en compétence sur des concepts avancés de l'écosystème Spring :
+
+- **Tests d'Intégration (MockMvc) :** La difficulté principale a été d'orchestrer des scénarios de tests séquentiels et dépendants (création Manager → Agence → Conseiller → Client). Il a fallu structurer rigoureusement les tests pour garantir la cohérence des données lors de l'exécution automatique.
+
+- **Programmation Orientée Aspect (AOP) & Logs :** L'implémentation du logging via AOP a nécessité l'apprentissage du fonctionnement des *Proxies* Spring. Le défi était d'intercepter proprement les méthodes de service pour tracer les opérations sensibles (virements) sans polluer le code métier avec du code technique répétitif.
+
+- **Documentation OpenAPI (Swagger) :** L'intégration de Swagger pour une documentation "propre" était une nouveauté. Il a fallu maîtriser les annotations spécifiques (`@Operation`, `@Schema`, `@ApiResponses`) pour que l'interface Swagger UI serve de véritable documentation contractuelle pour le client, et non pas seulement d'outil de debug.
+
 ---
 
 Bon build, bons tests, et amusez-vous bien avec l’API SimpleCash ! 🚀
+
+## Dépannage
+
+- 404 Whitelabel sur `/`:
+  - Normal si aucune redirection n’est configurée. Allez directement sur `/swagger-ui.html` ou utilisez les routes `/api/...`.
+- DB vide après lancement:
+  - Le seed est idempotent et se lance si nécessaire. Si vous venez d’un ancien schéma, faites un `DROP/CREATE` de la base ou lancez une fois avec `--spring.jpa.hibernate.ddl-auto=create`.
+- Erreur `com.mysql.cj.jdbc.Driver` introuvable:
+  - Lancez via `./gradlew bootRun` (classpath géré) et vérifiez vos identifiants MySQL dans `application.properties`.
+- Pas de logs:
+  - Les logs AOP apparaissent lors des appels HTTP; appelez un endpoint `/api/...`. Les fichiers sont dans `SimpleCash/logs`.
