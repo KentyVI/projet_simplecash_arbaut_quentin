@@ -10,8 +10,6 @@ import java.time.LocalDate;
 public class Agence {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private String id;
 
     private LocalDate dateCreation;
@@ -54,6 +52,4 @@ public class Agence {
     public void setGerant(Gerant gerant) {
         this.gerant = gerant;
     }
-
-    // getters/setters/constructors
 }
