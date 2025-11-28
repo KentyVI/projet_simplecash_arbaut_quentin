@@ -1,9 +1,6 @@
 package com.example.simplecash.entity;
 
-import com.example.simplecash.entity.Banque;
-import com.example.simplecash.entity.Gerant;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity
@@ -14,42 +11,15 @@ public class Agence {
 
     private LocalDate dateCreation;
 
-    @ManyToOne
-    @JoinColumn(name = "banque_id")
-    private Banque banque;
-
     @OneToOne
-    private Gerant gerant;
+    private Manager manager;
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public LocalDate getDateCreation() { return dateCreation; }
+    public void setDateCreation(LocalDate dateCreation) { this.dateCreation = dateCreation; }
 
-    public LocalDate getDateCreation() {
-        return dateCreation;
-    }
-
-    public void setDateCreation(LocalDate dateCreation) {
-        this.dateCreation = dateCreation;
-    }
-
-    public Banque getBanque() {
-        return banque;
-    }
-
-    public void setBanque(Banque banque) {
-        this.banque = banque;
-    }
-
-    public Gerant getGerant() {
-        return gerant;
-    }
-
-    public void setGerant(Gerant gerant) {
-        this.gerant = gerant;
-    }
+    public Manager getManager() { return manager; }
+    public void setManager(Manager manager) { this.manager = manager; }
 }

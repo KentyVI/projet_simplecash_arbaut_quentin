@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Gerant {
+public class Manager {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,13 +16,13 @@ public class Gerant {
     private String email;
     private String telephone;
 
-    @OneToOne(mappedBy = "gerant")
+    @OneToOne(mappedBy = "manager")
     private Agence agence;
 
-    @OneToMany(mappedBy = "gerant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)
     private List<Conseiller> conseillers = new ArrayList<>();
 
-    public Gerant() {}
+    public Manager() {}
 
     // GETTERS & SETTERS
     public Long getId() {

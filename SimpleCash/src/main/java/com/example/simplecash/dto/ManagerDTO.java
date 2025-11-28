@@ -1,6 +1,6 @@
 package com.example.simplecash.dto;
 
-public class GerantDTO {
+public class ManagerDTO {
     private Long id;
     private String nom;
     private String prenom;
@@ -8,7 +8,7 @@ public class GerantDTO {
     private String telephone;
     private String agenceId; // optionnel
 
-    public GerantDTO() {}
+    public ManagerDTO() {}
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -23,4 +23,3 @@ public class GerantDTO {
     public String getAgenceId() { return agenceId; }
     public void setAgenceId(String agenceId) { this.agenceId = agenceId; }
 }
-

@@ -6,28 +6,17 @@ import com.example.simplecash.entity.*;
 public final class SimpleCashMapper {
     private SimpleCashMapper() {}
 
-    public static BanqueDTO toDTO(Banque banque){
-        if(banque==null) 
+    public static ManagerDTO toDTO(Manager manager){
+        if(manager==null)
             return null;
-        BanqueDTO banqueDTO = new BanqueDTO();
-        banqueDTO.setId(banque.getId());
-        banqueDTO.setNom(banque.getNom());
-        banqueDTO.setAdresseSiege(banque.getAdresseSiege());
-        banqueDTO.setTelephone(banque.getTelephone());
-        return banqueDTO;
-    }
-
-    public static GerantDTO toDTO(Gerant gerant){
-        if(gerant==null)
-            return null;
-        GerantDTO gerantDTO = new GerantDTO();
-        gerantDTO.setId(gerant.getId());
-        gerantDTO.setNom(gerant.getNom());
-        gerantDTO.setPrenom(gerant.getPrenom());
-        gerantDTO.setEmail(gerant.getEmail());
-        gerantDTO.setTelephone(gerant.getTelephone());
-        gerantDTO.setAgenceId(gerant.getAgence()!=null? gerant.getAgence().getId():null);
-        return gerantDTO;
+        ManagerDTO dto = new ManagerDTO();
+        dto.setId(manager.getId());
+        dto.setNom(manager.getNom());
+        dto.setPrenom(manager.getPrenom());
+        dto.setEmail(manager.getEmail());
+        dto.setTelephone(manager.getTelephone());
+        dto.setAgenceId(manager.getAgence()!=null? manager.getAgence().getId():null);
+        return dto;
     }
 
     public static ConseillerDTO toDTO(Conseiller conseiller){
@@ -39,7 +28,7 @@ public final class SimpleCashMapper {
         conseillerDTO.setPrenom(conseiller.getPrenom());
         conseillerDTO.setEmail(conseiller.getEmail());
         conseillerDTO.setTelephone(conseiller.getTelephone());
-        conseillerDTO.setGerantId(conseiller.getGerant()!=null? conseiller.getGerant().getId():null);
+        conseillerDTO.setManagerId(conseiller.getManager()!=null? conseiller.getManager().getId():null);
         return conseillerDTO;
     }
 
@@ -67,8 +56,7 @@ public final class SimpleCashMapper {
         AgenceDTO agenceDTO = new AgenceDTO();
         agenceDTO.setId(agence.getId());
         agenceDTO.setDateCreation(agence.getDateCreation());
-        agenceDTO.setBanqueId(agence.getBanque()!=null ? agence.getBanque().getId() : null);
-        agenceDTO.setGerantId(agence.getGerant()!=null ? agence.getGerant().getId() : null);
+        agenceDTO.setManagerId(agence.getManager()!=null ? agence.getManager().getId() : null);
         return agenceDTO;
     }
 
@@ -107,4 +95,3 @@ public final class SimpleCashMapper {
         return compteEpargneDTO;
     }
 }
-

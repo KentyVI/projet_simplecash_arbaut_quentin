@@ -33,7 +33,7 @@ public class ConseillerController {
     public ResponseEntity<ConseillerDTO> create(@RequestBody ConseillerDTO dto){
         Conseiller c = new Conseiller();
         c.setNom(dto.getNom()); c.setPrenom(dto.getPrenom()); c.setEmail(dto.getEmail()); c.setTelephone(dto.getTelephone());
-        Conseiller created = conseillerService.create(c, dto.getGerantId());
+        Conseiller created = conseillerService.create(c, dto.getManagerId());
         return ResponseEntity.created(URI.create("/api/conseillers/"+created.getId())).body(SimpleCashMapper.toDTO(created));
     }
 
@@ -78,4 +78,3 @@ public class ConseillerController {
         return conseillerService.simulerCredit(montant, dureeMois, tauxAnnuel, assuranceAnnuel);
     }
 }
-

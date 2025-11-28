@@ -6,7 +6,7 @@ import com.example.simplecash.dto.VirementDTO;
 import com.example.simplecash.entity.*;
 import com.example.simplecash.repository.ClientRepository;
 import com.example.simplecash.repository.ConseillerRepository;
-import com.example.simplecash.repository.GerantRepository;
+import com.example.simplecash.repository.ManagerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,20 +16,20 @@ import java.util.List;
 public class ConseillerService {
     private final ConseillerRepository conseillerRepository;
     private final ClientRepository clientRepository;
-    private final GerantRepository gerantRepository;
+    private final ManagerRepository managerRepository;
 
-    public ConseillerService(ConseillerRepository conseillerRepository, ClientRepository clientRepository, GerantRepository gerantRepository) {
+    public ConseillerService(ConseillerRepository conseillerRepository, ClientRepository clientRepository, ManagerRepository managerRepository) {
         this.conseillerRepository = conseillerRepository;
         this.clientRepository = clientRepository;
-        this.gerantRepository = gerantRepository;
+        this.managerRepository = managerRepository;
     }
 
     public List<Conseiller> findAll(){ return conseillerRepository.findAll(); }
     public Conseiller get(Long id){ return conseillerRepository.findById(id).orElseThrow(); }
-    public Conseiller create(Conseiller c, Long gerantId){
-        if(gerantId!=null){
-            Gerant g = gerantRepository.findById(gerantId).orElseThrow();
-            c.setGerant(g);
+    public Conseiller create(Conseiller c, Long managerId){
+        if(managerId!=null){
+            Manager g = managerRepository.findById(managerId).orElseThrow();
+            c.setManager(g);
         }
         return conseillerRepository.save(c);
     }

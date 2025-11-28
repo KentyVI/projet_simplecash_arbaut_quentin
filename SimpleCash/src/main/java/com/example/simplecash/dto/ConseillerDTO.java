@@ -6,7 +6,7 @@ public class ConseillerDTO {
     private String prenom;
     private String email;
     private String telephone;
-    private Long gerantId;
+    private Long managerId;
 
     public ConseillerDTO() {}
 
@@ -20,7 +20,6 @@ public class ConseillerDTO {
     public void setEmail(String email) { this.email = email; }
     public String getTelephone() { return telephone; }
     public void setTelephone(String telephone) { this.telephone = telephone; }
-    public Long getGerantId() { return gerantId; }
-    public void setGerantId(Long gerantId) { this.gerantId = gerantId; }
+    public Long getManagerId() { return managerId; }
+    public void setManagerId(Long managerId) { this.managerId = managerId; }
 }
-
